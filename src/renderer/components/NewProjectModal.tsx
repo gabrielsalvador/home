@@ -33,20 +33,20 @@ export default function NewProjectModal({ onCreate, onClose }: NewProjectModalPr
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-slate-800 border border-slate-700 rounded-lg w-full max-w-md mx-4 shadow-xl">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700">
-          <h2 className="text-lg font-medium text-white">New Project</h2>
+      <div className="bg-[#2d2d2d] border border-[#3d3d3d] rounded-lg w-full max-w-md mx-4 shadow-2xl">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#3d3d3d]">
+          <h2 className="text-sm font-medium text-white">New Project</h2>
           <button
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-white rounded transition-colors"
+            className="p-1 text-[#999] hover:text-white rounded transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+            <label className="block text-xs font-medium text-[#999] mb-1.5">
               Project Name
             </label>
             <input
@@ -54,10 +54,10 @@ export default function NewProjectModal({ onCreate, onClose }: NewProjectModalPr
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="my-awesome-project"
-              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1.5 bg-[#1e1e1e] border border-[#555] rounded text-sm text-white placeholder-[#666] focus:outline-none focus:border-[#0058d0]"
               autoFocus
             />
-            <p className="text-xs text-slate-500 mt-1.5">
+            <p className="text-[11px] text-[#666] mt-1">
               This will create a new folder in your code directory
             </p>
           </div>
@@ -68,16 +68,16 @@ export default function NewProjectModal({ onCreate, onClose }: NewProjectModalPr
               id="init-git"
               checked={initGit}
               onChange={(e) => setInitGit(e.target.checked)}
-              className="w-4 h-4 bg-slate-700 border-slate-600 rounded text-blue-600 focus:ring-blue-500 focus:ring-offset-slate-800"
+              className="w-4 h-4 bg-[#1e1e1e] border-[#555] rounded text-[#0058d0] focus:ring-[#0058d0] focus:ring-offset-[#2d2d2d]"
             />
-            <label htmlFor="init-git" className="flex items-center gap-1.5 text-sm text-slate-300">
-              <GitBranch className="w-4 h-4" />
+            <label htmlFor="init-git" className="flex items-center gap-1.5 text-sm text-[#e5e5e5]">
+              <GitBranch className="w-4 h-4 text-[#999]" />
               Initialize git repository
             </label>
           </div>
 
           {error && (
-            <div className="p-3 bg-red-900/50 border border-red-700 rounded-lg text-sm text-red-200">
+            <div className="p-2 bg-red-900/50 border border-red-700 rounded text-xs text-red-200">
               {error}
             </div>
           )}
@@ -86,14 +86,14 @@ export default function NewProjectModal({ onCreate, onClose }: NewProjectModalPr
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm text-slate-300 hover:text-white transition-colors"
+              className="px-3 py-1.5 text-sm text-[#999] hover:text-white transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!name.trim() || loading}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white text-sm rounded-lg transition-colors"
+              className="px-3 py-1.5 bg-[#0058d0] hover:bg-[#0066f5] disabled:bg-[#555] disabled:cursor-not-allowed text-white text-sm rounded transition-colors"
             >
               {loading ? 'Creating...' : 'Create'}
             </button>

@@ -1,12 +1,75 @@
 @import "tailwindcss";
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background-color: #0f172a;
-  color: #e2e8f0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: #2d2d2d;
+  color: #e5e5e5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* macOS-style scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* App drag region for frameless window */
+.app-drag {
+  -webkit-app-region: drag;
+}
+
+.app-no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* Selection color */
+::selection {
+  background: #0058d0;
+  color: white;
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid #0058d0;
+  outline-offset: -2px;
+}
+
+/* Input focus */
+input:focus {
+  outline: none;
+}
+
+/* Button reset */
+button {
+  font-family: inherit;
+}
+
+/* Prevent text selection in UI elements */
+.select-none {
+  user-select: none;
+  -webkit-user-select: none;
 }

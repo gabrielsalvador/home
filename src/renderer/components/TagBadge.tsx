@@ -17,15 +17,17 @@ interface TagBadgeProps {
   tag: string;
   onRemove?: () => void;
   onClick?: () => void;
+  small?: boolean;
 }
 
-export default function TagBadge({ tag, onRemove, onClick }: TagBadgeProps) {
+export default function TagBadge({ tag, onRemove, onClick, small }: TagBadgeProps) {
   return (
     <span
       className={clsx(
-        'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs text-white',
+        'inline-flex items-center gap-1 rounded-full text-white',
         getTagColor(tag),
-        onClick && 'cursor-pointer hover:opacity-80'
+        onClick && 'cursor-pointer hover:opacity-80',
+        small ? 'px-1.5 py-0 text-[10px]' : 'px-2 py-0.5 text-xs'
       )}
       onClick={onClick}
     >

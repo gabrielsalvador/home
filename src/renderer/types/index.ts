@@ -21,12 +21,21 @@ export interface ProjectSettings {
   pinned: boolean;
   order: number;
   tags: string[];
+  tabId?: string;  // Which tab this project belongs to (undefined = no specific tab)
+}
+
+export interface TabDefinition {
+  id: string;
+  name: string;
+  order: number;
 }
 
 export interface Settings {
   mainCodeFolder: string;
   editorCommand: string;
   projects: Record<string, ProjectSettings>;
+  tabs: TabDefinition[];
+  activeTabId?: string;
 }
 
 export interface ElectronAPI {

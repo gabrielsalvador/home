@@ -6,18 +6,29 @@ export interface ProjectSettings {
   pinned: boolean;
   order: number;
   tags: string[];
+  tabId?: string;
+}
+
+export interface TabDefinition {
+  id: string;
+  name: string;
+  order: number;
 }
 
 export interface Settings {
   mainCodeFolder: string;
   editorCommand: string;
   projects: Record<string, ProjectSettings>;
+  tabs: TabDefinition[];
+  activeTabId?: string;
 }
 
 const DEFAULT_SETTINGS: Settings = {
   mainCodeFolder: process.env.MAIN_CODE_FOLDER || '',
   editorCommand: 'cursor $folder_path',
   projects: {},
+  tabs: [],
+  activeTabId: 'all',
 };
 
 function getSettingsPath(): string {
@@ -31,7 +42,7 @@ export function loadSettings(): Settings {
     if (fs.existsSync(settingsPath)) {
       const data = fs.readFileSync(settingsPath, 'utf-8');
       const parsed = JSON.parse(data);
-      return { ...DEFAULT_SETTINGS, ...parsed };
+      return { ...DEFAULT_SETTINGS, ...parsed, tabs: parsed.tabs || [] };
     }
   } catch (error) {
     console.error('Failed to load settings:', error);
