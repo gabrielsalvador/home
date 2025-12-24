@@ -36,6 +36,7 @@ export function registerIpcHandlers(): void {
       spawn(program, args, {
         detached: true,
         stdio: 'ignore',
+        shell: true,
       }).unref();
       return { success: true };
     } catch (error: any) {
