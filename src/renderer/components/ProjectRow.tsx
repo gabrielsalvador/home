@@ -17,6 +17,7 @@ interface ProjectRowProps {
   onPush: (path: string) => Promise<{ success: boolean; message: string }>;
   onCreateRemote: (path: string, name: string, isPrivate: boolean) => Promise<{ success: boolean; message: string }>;
   onAssignToTab: (path: string, tabId: string | undefined) => void;
+  onUpdateDescription: (description: string) => void;
 }
 
 function formatRelativeTime(date: Date): string {

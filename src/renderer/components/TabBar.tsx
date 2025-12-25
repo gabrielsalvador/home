@@ -111,7 +111,7 @@ export default function TabBar({
   onNewTab,
 }: TabBarProps) {
   return (
-    <div className="tab-bar flex items-center h-9 bg-[#3d3d3d] border-b border-[#2a2a2a] pl-[72px] select-none app-drag">
+    <div className="tab-bar flex items-center h-9 bg-[#3d3d3d] border-b border-[#2a2a2a] pl-[82px] select-none app-drag">
       <div className="flex items-center h-full gap-px app-no-drag">
         {tabs.map((tab) => (
           <TabItem

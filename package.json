@@ -1,8 +1,8 @@
 {
   "name": "home",
-  "productName": "home",
+  "productName": "Home",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Git repository manager with Finder-style interface",
   "main": ".vite/build/main.js",
   "scripts": {
     "start": "electron-forge start",
