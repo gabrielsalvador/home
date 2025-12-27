@@ -1,4 +1,4 @@
-import { ipcMain, dialog, shell } from 'electron';
+import { ipcMain, dialog } from 'electron';
 import { spawn } from 'node:child_process';
 import { loadSettings, saveSettings, Settings } from './services/settings-service';
 import { scanProjects, getProjectStatus, createProjectFolder } from './services/project-scanner';
@@ -25,19 +25,54 @@ export function registerIpcHandlers(): void {
   // Open project in editor
   ipcMain.handle('open-editor', async (_, projectPath: string) => {
     const settings = loadSettings();
-    const command = settings.editorCommand.replace('$folder_path', projectPath);
-
-    // Parse command into program and arguments
-    const parts = command.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
-    const program = parts[0];
-    const args = parts.slice(1).map(arg => arg.replace(/^"|"$/g, ''));
+    const editorCommand = settings.editorCommand || 'cursor $folder_path';
 
     try {
-      spawn(program, args, {
-        detached: true,
-        stdio: 'ignore',
-        shell: true,
-      }).unref();
+      // Use macOS 'open' command with -a flag for apps, which integrates properly with Apple Events
+      // This avoids race conditions that can occur with direct spawn + detached mode
+      if (process.platform === 'darwin') {
+        // Check if the command is a simple app name (e.g., "cursor", "code") or a full command
+        const parts = editorCommand.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
+        const program = parts[0].toLowerCase();
+
+        // Common editors that work well with 'open -a'
+        const appNames: Record<string, string> = {
+          'cursor': 'Cursor',
+          'code': 'Visual Studio Code',
+          'zed': 'Zed',
+          'sublime': 'Sublime Text',
+          'atom': 'Atom',
+          'webstorm': 'WebStorm',
+          'phpstorm': 'PhpStorm',
+          'idea': 'IntelliJ IDEA',
+        };
+
+        const appName = appNames[program];
+        if (appName) {
+          // Use 'open -a AppName path' for known apps
+          spawn('open', ['-a', appName, projectPath], {
+            stdio: 'ignore',
+          });
+        } else {
+          // Fall back to executing the command directly for custom commands
+          const command = editorCommand.replace('$folder_path', `"${projectPath}"`);
+          spawn('sh', ['-c', command], {
+            stdio: 'ignore',
+          });
+        }
+      } else {
+        // Non-macOS: use the original approach
+        const command = editorCommand.replace('$folder_path', projectPath);
+        const parts = command.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
+        const program = parts[0];
+        const args = parts.slice(1).map(arg => arg.replace(/^"|"$/g, ''));
+
+        spawn(program, args, {
+          detached: true,
+          stdio: 'ignore',
+          shell: true,
+        }).unref();
+      }
       return { success: true };
     } catch (error: any) {
       return { success: false, message: error.message };

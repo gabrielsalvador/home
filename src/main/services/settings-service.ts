@@ -32,7 +32,13 @@ const DEFAULT_SETTINGS: Settings = {
 };
 
 function getSettingsPath(): string {
-  return path.join(app.getPath('userData'), 'settings.json');
+  // In production, app.getAppPath() returns the app.asar path, so we go up to get the app root
+  // In development, it returns the project root directly
+  const appPath = app.getAppPath();
+  const projectRoot = app.isPackaged
+    ? path.join(appPath, '..', '..')
+    : appPath;
+  return path.join(projectRoot, 'settings.json');
 }
 
 export function loadSettings(): Settings {

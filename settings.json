@@ -1,0 +1,40 @@
+{
+  "mainCodeFolder": "/Users/gabrielsalvador/Code",
+  "editorCommand": "cursor $folder_path",
+  "projects": {
+    "/Users/gabrielsalvador/Code/code-home": {
+      "pinned": true,
+      "order": 0,
+      "tags": []
+    },
+    "/Users/gabrielsalvador/Code/arp": {
+      "pinned": true,
+      "order": 0,
+      "tags": []
+    },
+    "/Users/gabrielsalvador/Code/youtube-downloader": {
+      "pinned": false,
+      "order": 0,
+      "tags": [],
+      "tabId": "tab-1766852289452"
+    }
+  },
+  "tabs": [
+    {
+      "id": "tab-1766852270390",
+      "name": "work",
+      "order": 0
+    },
+    {
+      "id": "tab-1766852274881",
+      "name": "personal",
+      "order": 1
+    },
+    {
+      "id": "tab-1766852289452",
+      "name": "tools",
+      "order": 2
+    }
+  ],
+  "activeTabId": "all"
+}
