@@ -1,6 +1,14 @@
 import { ipcMain, dialog } from 'electron';
 import { spawn } from 'node:child_process';
-import { loadSettings, saveSettings, Settings } from './services/settings-service';
+import {
+  loadSettings,
+  saveSettings,
+  Settings,
+  isFirstRun,
+  setSettingsLocation,
+  getSettingsLocation,
+  getDefaultSettingsFolder,
+} from './services/settings-service';
 import { scanProjects, getProjectStatus, createProjectFolder } from './services/project-scanner';
 import { gitPush, gitInit } from './services/git-service';
 import { createGitHubRepo } from './services/gh-service';
@@ -120,5 +128,25 @@ export function registerIpcHandlers(): void {
     }
 
     return result.filePaths[0];
+  });
+
+  // Check if this is first run (no settings location configured)
+  ipcMain.handle('is-first-run', async () => {
+    return isFirstRun();
+  });
+
+  // Set the settings file location (during first-run setup)
+  ipcMain.handle('set-settings-location', async (_, folderPath: string) => {
+    setSettingsLocation(folderPath);
+  });
+
+  // Get current settings file location
+  ipcMain.handle('get-settings-location', async () => {
+    return getSettingsLocation();
+  });
+
+  // Get default settings folder path
+  ipcMain.handle('get-default-settings-folder', async () => {
+    return getDefaultSettingsFolder();
   });
 }

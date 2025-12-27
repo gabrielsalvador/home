@@ -48,6 +48,11 @@ export interface ElectronAPI {
   createProject: (name: string, initGit: boolean) => Promise<{ success: boolean; path?: string; message: string }>;
   refreshProject: (path: string) => Promise<Project>;
   selectFolder: () => Promise<string | null>;
+  // First-run setup
+  isFirstRun: () => Promise<boolean>;
+  setSettingsLocation: (folderPath: string) => Promise<void>;
+  getSettingsLocation: () => Promise<string | null>;
+  getDefaultSettingsFolder: () => Promise<string>;
 }
 
 declare global {

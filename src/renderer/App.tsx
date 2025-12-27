@@ -5,6 +5,7 @@ import Toolbar from './components/Toolbar';
 import ProjectList from './components/ProjectList';
 import SettingsModal from './components/SettingsModal';
 import NewProjectModal from './components/NewProjectModal';
+import SetupWizard from './components/SetupWizard';
 import { useTabs } from './hooks/useTabs';
 import { Project, Settings as SettingsType } from './types';
 
@@ -17,6 +18,7 @@ export default function App() {
   const [showNewProject, setShowNewProject] = useState(false);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isFirstRun, setIsFirstRun] = useState<boolean | null>(null);
 
   const handleSettingsChange = useCallback(async (newSettings: SettingsType) => {
     await window.electronAPI.saveSettings(newSettings);
@@ -36,8 +38,21 @@ export default function App() {
   } = useTabs(settings, handleSettingsChange);
 
   useEffect(() => {
-    loadData();
+    checkFirstRun();
   }, []);
+
+  async function checkFirstRun() {
+    const firstRun = await window.electronAPI.isFirstRun();
+    setIsFirstRun(firstRun);
+    if (!firstRun) {
+      loadData();
+    }
+  }
+
+  async function handleSetupComplete() {
+    setIsFirstRun(false);
+    loadData();
+  }
 
   async function loadData() {
     try {
@@ -130,6 +145,19 @@ export default function App() {
     }
 
     return filtered;
+  }
+
+  // Show setup wizard on first run
+  if (isFirstRun === null) {
+    return (
+      <div className="min-h-screen bg-[#2d2d2d] flex items-center justify-center">
+        <div className="text-[#8e8e93]">Loading...</div>
+      </div>
+    );
+  }
+
+  if (isFirstRun) {
+    return <SetupWizard onComplete={handleSetupComplete} />;
   }
 
   if (loading) {
