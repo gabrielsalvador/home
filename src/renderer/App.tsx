@@ -5,6 +5,7 @@ import Toolbar from './components/Toolbar';
 import ProjectList from './components/ProjectList';
 import SettingsModal from './components/SettingsModal';
 import NewProjectModal from './components/NewProjectModal';
+import EditorCommandModal from './components/EditorCommandModal';
 import SetupWizard from './components/SetupWizard';
 import { useTabs } from './hooks/useTabs';
 import { Project, Settings as SettingsType } from './types';
@@ -16,6 +17,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showNewProject, setShowNewProject] = useState(false);
+  const [editorCommandProject, setEditorCommandProject] = useState<Project | null>(null);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isFirstRun, setIsFirstRun] = useState<boolean | null>(null);
@@ -128,6 +130,27 @@ export default function App() {
     handleSettingsChange(newSettings);
   }
 
+  function handleSetEditorCommand(path: string, editorCommand: string | undefined) {
+    if (!settings) return;
+    const projectSettings = settings.projects[path] || { pinned: false, order: 0, tags: [] };
+    const newSettings = {
+      ...settings,
+      projects: {
+        ...settings.projects,
+        [path]: { ...projectSettings, editorCommand },
+      },
+    };
+    handleSettingsChange(newSettings);
+    setEditorCommandProject(null);
+  }
+
+  function handleOpenEditorCommandModal(path: string) {
+    const project = projects.find(p => p.path === path);
+    if (project) {
+      setEditorCommandProject(project);
+    }
+  }
+
   function handleSidebarProjectSelect(path: string | null) {
     setSelectedProject(path);
   }
@@ -223,6 +246,7 @@ export default function App() {
               onPush={handlePush}
               onCreateRemote={handleCreateRemote}
               onAssignToTab={assignProjectToTab}
+              onSetEditorCommand={handleOpenEditorCommandModal}
             />
           </div>
         </div>
@@ -241,6 +265,16 @@ export default function App() {
         <NewProjectModal
           onCreate={handleNewProject}
           onClose={() => setShowNewProject(false)}
+        />
+      )}
+
+      {editorCommandProject && settings && (
+        <EditorCommandModal
+          projectName={editorCommandProject.name}
+          currentCommand={settings.projects[editorCommandProject.path]?.editorCommand}
+          globalCommand={settings.editorCommand}
+          onSave={(command) => handleSetEditorCommand(editorCommandProject.path, command)}
+          onClose={() => setEditorCommandProject(null)}
         />
       )}
     </div>

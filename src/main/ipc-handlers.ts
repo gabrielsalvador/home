@@ -33,7 +33,9 @@ export function registerIpcHandlers(): void {
   // Open project in editor
   ipcMain.handle('open-editor', async (_, projectPath: string) => {
     const settings = loadSettings();
-    const editorCommand = settings.editorCommand || 'cursor $folder_path';
+    // Use per-project editor command if set, otherwise fall back to global setting
+    const projectSettings = settings.projects[projectPath];
+    const editorCommand = projectSettings?.editorCommand || settings.editorCommand || 'cursor $folder_path';
 
     try {
       // Use macOS 'open' command with -a flag for apps, which integrates properly with Apple Events

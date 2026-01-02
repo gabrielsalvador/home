@@ -22,6 +22,7 @@ export interface ProjectSettings {
   order: number;
   tags: string[];
   tabId?: string;  // Which tab this project belongs to (undefined = no specific tab)
+  editorCommand?: string;  // Custom editor command for this project (overrides global setting)
 }
 
 export interface TabDefinition {

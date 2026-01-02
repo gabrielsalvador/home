@@ -12,6 +12,7 @@ export interface ProjectSettings {
   order: number;
   tags: string[];
   tabId?: string;
+  editorCommand?: string;  // Custom editor command for this project (overrides global setting)
 }
 
 export interface TabDefinition {

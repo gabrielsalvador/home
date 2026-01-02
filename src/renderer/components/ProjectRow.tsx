@@ -17,7 +17,7 @@ interface ProjectRowProps {
   onPush: (path: string) => Promise<{ success: boolean; message: string }>;
   onCreateRemote: (path: string, name: string, isPrivate: boolean) => Promise<{ success: boolean; message: string }>;
   onAssignToTab: (path: string, tabId: string | undefined) => void;
-  onUpdateDescription: (description: string) => void;
+  onSetEditorCommand: (path: string) => void;
 }
 
 function formatRelativeTime(date: Date): string {
@@ -45,6 +45,7 @@ export default function ProjectRow({
   onPush,
   onCreateRemote,
   onAssignToTab,
+  onSetEditorCommand,
 }: ProjectRowProps) {
   const [showActions, setShowActions] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
@@ -82,10 +83,14 @@ export default function ProjectRow({
       onClick: onDoubleClick,
     },
     {
+      label: 'Set Editor Command...',
+      onClick: () => onSetEditorCommand(project.path),
+    },
+    { separator: true },
+    {
       label: isPinned ? 'Unpin from Favorites' : 'Pin to Favorites',
       onClick: () => onTogglePin(project.path),
     },
-    { separator: true },
     {
       label: 'Move to Tab',
       submenu: [

@@ -18,6 +18,7 @@ interface ProjectListProps {
   onPush: (path: string) => Promise<{ success: boolean; message: string }>;
   onCreateRemote: (path: string, name: string, isPrivate: boolean) => Promise<{ success: boolean; message: string }>;
   onAssignToTab: (path: string, tabId: string | undefined) => void;
+  onSetEditorCommand: (path: string) => void;
 }
 
 interface ColumnHeaderProps {
@@ -60,6 +61,7 @@ export default function ProjectList({
   onPush,
   onCreateRemote,
   onAssignToTab,
+  onSetEditorCommand,
 }: ProjectListProps) {
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
@@ -151,6 +153,7 @@ export default function ProjectList({
             onPush={onPush}
             onCreateRemote={onCreateRemote}
             onAssignToTab={onAssignToTab}
+            onSetEditorCommand={onSetEditorCommand}
           />
         ))}
       </div>
