@@ -1,6 +1,6 @@
 {
   "mainCodeFolder": "/Users/gabrielsalvador/Code",
-  "editorCommand": "cursor $folder_path",
+  "editorCommand": "open -na Terminal $folder_path",
   "projects": {
     "/Users/gabrielsalvador/Code/code-home": {
       "pinned": true,
